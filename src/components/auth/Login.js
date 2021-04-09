@@ -1,6 +1,6 @@
 const Login = () => {
   return (
-    <div className="login">
+    <form className="login">
       <div className="form-control">
         <p>Enter your email</p>
         <input type="text"></input>
@@ -9,7 +9,10 @@ const Login = () => {
         <p>Enter your password</p>
         <input type="password"></input>
       </div>
-    </div>
+      <button type="button" className="button">
+        Login
+      </button>
+    </form>
   );
 };
 

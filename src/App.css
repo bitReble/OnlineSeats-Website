@@ -7,7 +7,7 @@
 
 .form-control {
   margin: 10px;
-  width: 400px;
+  width: 500px;
   display: flex;
   justify-content: space-between;
 }
@@ -18,7 +18,29 @@
 }
 
 .form-control input {
-  width: 200px;
+  width: 300px;
   height: 35px;
   padding: 5px;
+  font-size: 18px;
+}
+
+.nav-bar {
+  padding: 10px;
+  background-color: #b4b4b4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-bar .right a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: black;
+}
+
+.button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
 }
