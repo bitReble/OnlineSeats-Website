@@ -6,7 +6,7 @@ const initalState = {
 };
 
 const authReducer = (state = initalState, action) => {
-  const { type, payload } = action;
+  const { type } = action;
   switch (type) {
     default:
       return state;
