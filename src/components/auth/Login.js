@@ -47,9 +47,6 @@ const Login = () => {
           <input type="email" placeholder="Email" />
           <div className="password-input">
             <input type="password" placeholder="Password" />
-            <div className="eye">
-              <button type="button"></button>
-            </div>
           </div>
 
           <button className="button" type="submit">

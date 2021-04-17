@@ -1,7 +1,24 @@
 import { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
   const [userCategory, setUserCategory] = useState("passenger");
+
+  const [userData, setUserData] = useState({});
+
+  const onUserNameChange = (userName) => {
+    setUserData({ ...userData, userName });
+  };
+
+  const onEmailChange = (email) => {
+    setUserData({ ...userData, email });
+  };
+
+  const onPasswordChange = (password) => {
+    setUserData({ ...userData, password });
+  };
+
+  const onFormSubmit = async () => {};
 
   return (
     <div id="register">
@@ -33,16 +50,31 @@ const Register = () => {
               <p>Operator</p>
             </div>
           </div>
-          <input type="email" placeholder="Email" />
+          <input
+            onChange={(e) => {
+              onUserNameChange(e.target.value);
+            }}
+            type="text"
+            placeholder="Name"
+          />
+          <input
+            onChange={(e) => {
+              onEmailChange(e.target.value);
+            }}
+            type="email"
+            placeholder="Email"
+          />
           <div className="password-input">
-            <input type="password" placeholder="Password" />
-
-            <div className="eye">
-              <button type="button"></button>
-            </div>
+            <input
+              onChange={(e) => {
+                onPasswordChange(e.target.value);
+              }}
+              type="password"
+              placeholder="Password"
+            />
           </div>
 
-          <button className="button" type="submit">
+          <button onClick={onFormSubmit} className="button" type="button">
             Sign Up
           </button>
         </form>
