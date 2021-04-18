@@ -1,7 +1,10 @@
 import { useState } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-const Register = () => {
+import { register } from "../../actions/auth";
+
+const Register = ({ register }) => {
   const [userCategory, setUserCategory] = useState("passenger");
 
   const [userData, setUserData] = useState({});
@@ -18,7 +21,9 @@ const Register = () => {
     setUserData({ ...userData, password });
   };
 
-  const onFormSubmit = async () => {};
+  const onFormSubmit = async () => {
+    register({ ...userData });
+  };
 
   return (
     <div id="register">
@@ -83,4 +88,8 @@ const Register = () => {
   );
 };
 
-export default Register;
+Register.prototype = {
+  register: PropTypes.func.isRequired,
+};
+
+export default connect(null, { register })(Register);
