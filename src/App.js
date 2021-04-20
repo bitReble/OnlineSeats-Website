@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import "./App.css";
 import store from "./store";
 import setAuthToken from "./util/setAuthToken";
+import Alert from "./components/layout/Alert";
 
 function App() {
   if (localStorage.token) {
@@ -17,6 +18,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <NavBar></NavBar>
+        <Alert></Alert>
         <Route exact path="/" component={Login}></Route>
         <Switch>
           <Route exact path="/login" component={Login}></Route>
