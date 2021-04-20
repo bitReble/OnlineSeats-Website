@@ -1,28 +1,48 @@
 import { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 import { register } from "../../actions/auth";
 
 const Register = ({ register }) => {
   const [userCategory, setUserCategory] = useState("passenger");
-
   const [userData, setUserData] = useState({});
+  const [isFormDataValid, setFormDataValidation] = useState(false);
+
+  useEffect(() => {
+    validateFormInput();
+  }, [userData]);
+
+  // useEffect(() => {}, [isFormDataValid]);
 
   const onUserNameChange = (userName) => {
-    setUserData({ ...userData, userName });
+    const isUserNameValid = true;
+    setUserData({ ...userData, userName, isUserNameValid });
   };
 
   const onEmailChange = (email) => {
-    setUserData({ ...userData, email });
+    const isEmailValid = true;
+    setUserData({ ...userData, email, isEmailValid });
   };
 
   const onPasswordChange = (password) => {
-    setUserData({ ...userData, password });
+    const isPasswordValid = true;
+    setUserData({ ...userData, password, isPasswordValid });
   };
 
-  const onFormSubmit = async () => {
-    register({ ...userData });
+  const validateFormInput = () => {
+    const { isUserNameValid, isPasswordValid, isEmailValid } = userData;
+    if (!(isEmailValid && isPasswordValid && isUserNameValid)) {
+      return setFormDataValidation(false);
+    }
+
+    setFormDataValidation(true);
+  };
+
+  const onFormSubmit = async (e) => {
+    e.preventDefault();
+    register({ ...userData, userCategory });
   };
 
   return (
@@ -78,8 +98,12 @@ const Register = ({ register }) => {
               placeholder="Password"
             />
           </div>
-
-          <button onClick={onFormSubmit} className="button" type="button">
+          <button
+            disabled={!isFormDataValid}
+            className={`button ${isFormDataValid ? "" : "disabled"}`}
+            onClick={onFormSubmit}
+            type="submit"
+          >
             Sign Up
           </button>
         </form>

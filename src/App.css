@@ -3,7 +3,7 @@
   --default-form-font-color: #546e7a;
   --default-form-backgroud: #e8f2fd;
   --light-form-font-color: #8c9ea7;
-  --primary-color: #17a2b8;
+  /* --primary-color: #17a2b8; */
   --dark-color: #343a40;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
@@ -238,6 +238,10 @@
   opacity: 0.9;
   background: var(--light-color);
   color: #333;
+  text-transform: capitalize;
+  position: sticky;
+  width: 100%;
+  top: 0;
 }
 
 .alert-primary {
@@ -269,4 +273,8 @@
   background: #fff;
   color: #333;
   border: #ccc solid 1px;
+}
+
+.disabled {
+  opacity: 0.2;
 }
