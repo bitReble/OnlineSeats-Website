@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import BusTypes from "./components/auth/BusTypes";
 import NavBar from "./components/layout/Navbar";
 import { Provider } from "react-redux";
 
@@ -23,6 +24,7 @@ function App() {
         <Switch>
           <Route exact path="/login" component={Login}></Route>
           <Route exact path="/register" component={Register}></Route>
+          <Route exact path="/bustypes" component={BusTypes}></Route>
         </Switch>
       </Router>
     </Provider>
