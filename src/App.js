@@ -8,6 +8,8 @@ import "./App.css";
 import store from "./store";
 import setAuthToken from "./util/setAuthToken";
 import Alert from "./components/layout/Alert";
+import BusRoute from "./components/pages/BusRoute";
+
 
 function App() {
   if (localStorage.token) {
@@ -23,6 +25,7 @@ function App() {
         <Switch>
           <Route exact path="/login" component={Login}></Route>
           <Route exact path="/register" component={Register}></Route>
+          <Route exact path="/busroute" component={BusRoute}></Route>
         </Switch>
       </Router>
     </Provider>
