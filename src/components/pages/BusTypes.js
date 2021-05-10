@@ -1,10 +1,9 @@
-import { useState } from "react";
+import React, { Component } from "react";
 
 // import { BusTypes } from "../../actions/auth";
 
-const BusTypes = () => {
-//   const [userCategory, setUserCategory] = useState("passenger");
-
+export default class BusTypes extends Component {
+    render() {
   return (
     <div id="busTypes" class="container-fluid">
         <div className="row" style={{margin: "50px"}}>
@@ -83,6 +82,7 @@ const BusTypes = () => {
         </div>
     </div>
   );
-};
+}
+}
 
-export default BusTypes;
+

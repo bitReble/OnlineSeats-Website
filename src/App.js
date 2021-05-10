@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import BusTypes from "./components/auth/BusTypes";
 import NavBar from "./components/layout/Navbar";
 import { Provider } from "react-redux";
 
@@ -9,6 +8,9 @@ import "./App.css";
 import store from "./store";
 import setAuthToken from "./util/setAuthToken";
 import Alert from "./components/layout/Alert";
+import BusRoute from "./components/pages/BusRoute";
+import BusTypes from "./components/pages/BusTypes";
+
 
 function App() {
   if (localStorage.token) {
@@ -25,6 +27,7 @@ function App() {
           <Route exact path="/login" component={Login}></Route>
           <Route exact path="/register" component={Register}></Route>
           <Route exact path="/bustypes" component={BusTypes}></Route>
+          <Route exact path="/busroute" component={BusRoute}></Route>
         </Switch>
       </Router>
     </Provider>
