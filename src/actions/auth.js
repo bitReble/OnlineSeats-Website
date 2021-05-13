@@ -55,13 +55,14 @@ export const login =
       } else {
         dispatch(setAlert("Still in construction!", "danger"));
       }
+      console.log({ loginResponse: res });
       dispatch({ type: LOGIN_SUCCESS, payload: res.data });
       dispatch(setAlert(res.data.message, "success"));
       // dispatch(loadUser());
     } catch (err) {
       const errors = err?.response?.data?.errors;
       if (errors) {
-        errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+        errors.forEach((error) => dispatch(setAlert(error.message, "danger")));
       }
       dispatch({ type: LOGIN_FAIL });
     }
