@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../actions/auth";
+import { Redirect } from "react-router";
 
-const Login = ({ login }) => {
+const Login = ({ login, isAuthenticated }) => {
   const [userCategory, setUserCategory] = useState("passenger");
   const [userData, setUserData] = useState({});
   const [isFormDataValid, setFormDataValidation] = useState(false);
@@ -41,6 +42,10 @@ const Login = ({ login }) => {
     e.preventDefault();
     login({ ...userData, userCategory });
   };
+
+  if (isAuthenticated) {
+    return <Redirect to="/busroute"></Redirect>;
+  }
 
   return (
     <div id="login">
@@ -118,4 +123,8 @@ Login.prototype = {
   login: PropTypes.func.isRequired,
 };
 
-export default connect(null, { login })(Login);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { login })(Login);

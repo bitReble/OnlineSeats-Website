@@ -6,7 +6,7 @@ import {
 
 const initalState = {
   token: localStorage.getItem("token"),
-  isAuthenticated: null,
+  isAuthenticated: false,
   loading: true,
   user: null,
 };
@@ -27,6 +27,7 @@ const authReducer = (state = initalState, action) => {
       return {
         ...state,
         payload,
+        isAuthenticated: true,
       };
     default:
       return state;
