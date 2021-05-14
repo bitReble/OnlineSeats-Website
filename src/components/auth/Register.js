@@ -4,8 +4,9 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 
 import { register } from "../../actions/auth";
+import { Redirect } from "react-router";
 
-const Register = ({ register }) => {
+const Register = ({ register, isAuthenticated }) => {
   const [userCategory, setUserCategory] = useState("passenger");
   const [userData, setUserData] = useState({});
   const [isFormDataValid, setFormDataValidation] = useState(false);
@@ -50,6 +51,10 @@ const Register = ({ register }) => {
     e.preventDefault();
     register({ ...userData, userCategory });
   };
+
+  if (isAuthenticated) {
+    return <Redirect to="/busroute"></Redirect>;
+  }
 
   return (
     <div id="register">
@@ -120,6 +125,11 @@ const Register = ({ register }) => {
 
 Register.prototype = {
   register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
-export default connect(null, { register })(Register);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { register })(Register);

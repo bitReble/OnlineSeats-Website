@@ -2,6 +2,7 @@ import {
   LOGIN_SUCCESS,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
+  TOKEN_LOADED,
 } from "../actions/types";
 
 const initalState = {
@@ -24,11 +25,14 @@ const authReducer = (state = initalState, action) => {
         user: null,
       };
     case LOGIN_SUCCESS:
+      localStorage.setItem("token", payload.token);
       return {
         ...state,
         payload,
         isAuthenticated: true,
       };
+    case TOKEN_LOADED:
+      return { ...state, ...payload, isAuthenticated: true };
     default:
       return state;
   }

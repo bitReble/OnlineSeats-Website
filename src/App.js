@@ -10,12 +10,18 @@ import setAuthToken from "./util/setAuthToken";
 import Alert from "./components/layout/Alert";
 import BusRoute from "./components/pages/BusRoute";
 import BusTypes from "./components/pages/BusTypes";
-
+import { useEffect } from "react";
+import { loadUser } from "./actions/auth";
+import PrivateRoute from "./components/routing/PrivateRoute";
 
 function App() {
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
+
+  useEffect(() => {
+    store.dispatch(loadUser());
+  });
 
   return (
     <Provider store={store}>
@@ -26,8 +32,16 @@ function App() {
         <Switch>
           <Route exact path="/login" component={Login}></Route>
           <Route exact path="/register" component={Register}></Route>
-          <Route exact path="/bustypes" component={BusTypes}></Route>
-          <Route exact path="/busroute" component={BusRoute}></Route>
+          <PrivateRoute
+            exact
+            path="/bustypes"
+            component={BusTypes}
+          ></PrivateRoute>
+          <PrivateRoute
+            exact
+            path="/busroute"
+            component={BusRoute}
+          ></PrivateRoute>
         </Switch>
       </Router>
     </Provider>

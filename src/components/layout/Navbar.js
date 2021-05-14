@@ -1,6 +1,8 @@
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const NavBar = () => {
+const NavBar = ({ isAuthenticated }) => {
   return (
     <div className="nav-bar">
       <div className="left">
@@ -9,11 +11,20 @@ const NavBar = () => {
         </Link>
       </div>
       <div className="right">
-        <Link to="/register">Sign Up</Link>
-        <Link to="/login">Sign In</Link>
+        {!isAuthenticated && <Link to="/register">Sign Up</Link>}
+        {!isAuthenticated && <Link to="/login">Sign In</Link>}
+        {isAuthenticated && <button className="button">Log out</button>}
       </div>
     </div>
   );
 };
 
-export default NavBar;
+NavBar.prototype = {
+  isAuthenticated: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, {})(NavBar);

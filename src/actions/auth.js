@@ -4,9 +4,11 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  TOKEN_LOADED,
 } from "./types";
 import axios from "axios";
 import { setAlert } from "./alert";
+import setAuthToken from "../util/setAuthToken";
 
 // Register user
 export const register =
@@ -71,4 +73,11 @@ export const login =
 // Logout and clear profile
 export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT });
+};
+
+export const loadUser = () => async (dispatch) => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+    dispatch({ type: TOKEN_LOADED, payload: { token: localStorage.token } });
+  }
 };
