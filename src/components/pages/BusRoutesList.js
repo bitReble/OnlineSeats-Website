@@ -8,57 +8,27 @@ export default class BusRoutesList extends Component {
         <table>
           <thead>
             <tr className="list-group-item text-capitalize d-flex justify-content-between">
-                <th>ID</th>
-                <th>From</th>
-                <th>To</th>
-                <th> </th>
+              <th>ID</th>
+              <th>From</th>
+              <th>To</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr className="list-group-item text-capitalize d-flex justify-content-between">
-                <td>
-                  <h6>001</h6>
-                </td>
-                <td>Colombo</td>
-                <td>Chilaw</td>
-                <td className="todo-icon">
-                  <span className="mx-2 text-success">
-                    <i className="fas fa-pen" />
-                  </span>
-                  <span className="mx-2 text-danger">
-                    <i className="fas fa-trash" />
-                  </span>
-                </td>
-            </tr>
-            <tr className="list-group-item text-capitalize d-flex justify-content-between">
-                <td>
-                  <h6>002</h6>
-                </td>
-                <td>Colombo</td>
-                <td>Jaffna</td>
-                <td className="todo-icon">
-                  <span className="mx-2 text-success">
-                    <i className="fas fa-pen" />
-                  </span>
-                  <span className="mx-2 text-danger">
-                    <i className="fas fa-trash" />
-                  </span>
-                </td>
-            </tr>
-            <tr className="list-group-item text-capitalize d-flex justify-content-between">
-                <td>
-                  <h6>003</h6>
-                </td>
-                <td>Colombo</td>
-                <td>Mannar</td>
-                <td className="todo-icon">
-                  <span className="mx-2 text-success">
-                    <i className="fas fa-pen" />
-                  </span>
-                  <span className="mx-2 text-danger">
-                    <i className="fas fa-trash" />
-                  </span>
-                </td>
+              <td>
+                <h6>001</h6>
+              </td>
+              <td>Colombo</td>
+              <td>Chilaw</td>
+              <td className="todo-icon">
+                <span className="mx-2 text-success">
+                  <i className="fas fa-pen" />
+                </span>
+                <span className="mx-2 text-danger">
+                  <i className="fas fa-trash" />
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>

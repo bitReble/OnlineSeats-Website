@@ -11,33 +11,39 @@ const Register = ({ register }) => {
   const [isFormDataValid, setFormDataValidation] = useState(false);
 
   useEffect(() => {
+    const validateFormInput = () => {
+      const { isUserNameValid, isPasswordValid, isEmailValid } = userData;
+      if (!(isEmailValid && isPasswordValid && isUserNameValid)) {
+        return setFormDataValidation(false);
+      }
+
+      setFormDataValidation(true);
+    };
     validateFormInput();
   }, [userData]);
 
-  // useEffect(() => {}, [isFormDataValid]);
-
   const onUserNameChange = (userName) => {
-    const isUserNameValid = true;
+    let isUserNameValid = false;
+    if (userName) {
+      isUserNameValid = true;
+    }
     setUserData({ ...userData, userName, isUserNameValid });
   };
 
   const onEmailChange = (email) => {
-    const isEmailValid = true;
+    let isEmailValid = false;
+    if (email) {
+      isEmailValid = true;
+    }
     setUserData({ ...userData, email, isEmailValid });
   };
 
   const onPasswordChange = (password) => {
-    const isPasswordValid = true;
-    setUserData({ ...userData, password, isPasswordValid });
-  };
-
-  const validateFormInput = () => {
-    const { isUserNameValid, isPasswordValid, isEmailValid } = userData;
-    if (!(isEmailValid && isPasswordValid && isUserNameValid)) {
-      return setFormDataValidation(false);
+    let isPasswordValid = false;
+    if (password) {
+      isPasswordValid = true;
     }
-
-    setFormDataValidation(true);
+    setUserData({ ...userData, password, isPasswordValid });
   };
 
   const onFormSubmit = async (e) => {
