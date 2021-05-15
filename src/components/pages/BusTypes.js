@@ -66,7 +66,6 @@ const BusTypes = ({
                     <th>Id</th>
                     <th>Name</th>
                     <th>Number of seats</th>
-                    <th>Number of seats</th>
                     <th>Left</th>
                     <th>Right</th>
                     <th></th>
