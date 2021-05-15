@@ -285,3 +285,26 @@
 .disabled {
   opacity: 0.2;
 }
+
+.schedule-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.schedule-row-wrapper {
+  width: 600px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.schedule-row {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
