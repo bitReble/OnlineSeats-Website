@@ -31,7 +31,7 @@ export const deleteRoute = (id) => async (dispatch) => {
   };
   const body = JSON.stringify({ route_id: id });
   try {
-    let res = await axios.post("route/delete-route", body, config);
+    await axios.post("route/delete-route", body, config);
     dispatch({ type: ROUTE_DELETED, payload: { _id: id } });
   } catch (err) {
     console.log(err);

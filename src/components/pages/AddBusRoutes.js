@@ -12,7 +12,7 @@ const AddBusRoutes = ({ createRoute, route, setRoute, updateRoute }) => {
   });
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    if (!route._id) {
+    if (!route) {
       return createRoute(state);
     }
     updateRoute({ ...state, id: route._id });

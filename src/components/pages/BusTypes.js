@@ -1,144 +1,196 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getBusTypes, createBusTypes } from "../../actions/bus";
 
-const BusTypes = () => {
+const BusTypes = ({ getBusTypes, busTypes, createBusTypes }) => {
+  const [state, setState] = useState({
+    name: "",
+    number_of_seats: 0,
+    left: 0,
+    right: 0,
+  });
+
+  const [isFormDataValid, setIsFormDataValid] = useState(false);
+
+  useEffect(() => {
+    getBusTypes();
+  }, [getBusTypes]);
+
+  useEffect(() => {
+    const validateFormInput = () => {
+      return state.name && state.number_of_seats && state.left && state.right;
+    };
+    setIsFormDataValid(!!validateFormInput());
+  }, [state]);
+
+  const onBusTypeDelete = (id) => {};
+
+  const onFormSubmit = async (e) => {
+    e.preventDefault();
+    createBusTypes(state);
+  };
+
   return (
-    <div id="busTypes" className="container-fluid">
-      <div className="row" style={{ margin: "50px" }}>
-        <div className="col-sm-5"></div>
-        <div className="col-sm-3">
-          <div className="row">
-            <h1>Bus Types</h1>
-          </div>
-        </div>
-        <div className="col-sm-4"></div>
-      </div>
-      <div className="row" style={{ margin: "20px" }}>
-        <div className="col-sm-3"></div>
-        <div className="col-sm-6">
-          <div className="card">
-            <div className="row">
-              <div
-                className="col-sm-3"
-                style={{ marginTop: "15px", marginBottom: "15px" }}
-              >
+    <div className="container">
+      <div className="row">
+        <div className="col-10 mx-auto col-md-8 mt-4">
+          <ul className="list-group my-5">
+            <h3 className="text-capitalize text-center">Bus Type List</h3>
+            {busTypes.length ? (
+              <table>
+                <thead>
+                  <tr className="list-group-item text-capitalize d-flex justify-content-between">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Number of seats</th>
+                    <th>Number of seats</th>
+                    <th>Left</th>
+                    <th>Right</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {busTypes.map((busType, index) => {
+                    return (
+                      <tr
+                        key={index}
+                        className="list-group-item text-capitalize d-flex justify-content-between"
+                      >
+                        <td>
+                          <h6>{`${busType?._id
+                            .toString()
+                            .substr(0, 7)} ...`}</h6>
+                        </td>
+                        <td>{busType.name}</td>
+                        <td>{busType.number_of_seats}</td>
+                        <td>{busType.left}</td>
+                        <td>{busType.right}</td>
+                        <td className="todo-icon">
+                          <span
+                            className="mx-2 text-success"
+                            onClick={() => {
+                              // onRouteUpdate(route);
+                            }}
+                          >
+                            <i className="fas fa-pen" />
+                          </span>
+                          <span
+                            className="mx-2 text-danger"
+                            onClick={() => {
+                              onBusTypeDelete(busType._id);
+                            }}
+                          >
+                            <i className="fas fa-trash" />
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <span className="text-danger">Currently no bus type found!</span>
+            )}
+          </ul>
+
+          <div className="card card-body my-3">
+            <h3 className="text-capitalize text-center">Add Bus Types</h3>
+            <form onSubmit={onFormSubmit}>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <div className="input-group-text bg-primary text-white">
+                    Name
+                  </div>
+                </div>
+                <input
+                  value={state.name}
+                  onChange={(e) => {
+                    setState((preState) => {
+                      return { ...preState, name: e.target.value };
+                    });
+                  }}
+                  type="text"
+                  className="form-control"
+                />
+              </div>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <div className="input-group-text bg-primary text-white">
+                    Number of seats
+                  </div>
+                </div>
+                <input
+                  value={state.number_of_seats}
+                  onChange={(e) => {
+                    setState((preState) => {
+                      return { ...preState, number_of_seats: e.target.value };
+                    });
+                  }}
+                  type="number"
+                  className="form-control"
+                />
+              </div>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <div className="input-group-text bg-primary text-white">
+                    Left seats per row
+                  </div>
+                </div>
+                <input
+                  value={state.left}
+                  onChange={(e) => {
+                    setState((preState) => {
+                      return { ...preState, left: e.target.value };
+                    });
+                  }}
+                  type="number"
+                  className="form-control"
+                />
+              </div>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <div className="input-group-text bg-primary text-white">
+                    Right seats per row
+                  </div>
+                </div>
+                <input
+                  value={state.right}
+                  onChange={(e) => {
+                    setState((preState) => {
+                      return { ...preState, right: e.target.value };
+                    });
+                  }}
+                  type="number"
+                  className="form-control"
+                />
+              </div>
+              {isFormDataValid && (
                 <button
-                  type="button"
-                  className="btn btn-primary"
-                  style={{ marginLeft: "30px" }}
+                  type="submit"
+                  className="btn btn-block btn-primary mt-3"
                 >
                   + Add Bus Type
                 </button>
-              </div>
-              <div
-                className="col-sm-6"
-                style={{ marginTop: "15px", marginBottom: "15px" }}
-              >
-                <div className="row">
-                  <div className="input-group">
-                    <div className="form-outline">
-                      <input className="form-control" placeholder="Search" />
-                    </div>
-                    <button type="button" className="btn btn-primary">
-                      <i className="fas fa-search"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-sm-3"
-                style={{ marginTop: "15px", marginBottom: "15px" }}
-              >
-                <button
-                  type="button"
-                  className="btn btn-dark"
-                  style={{ margin: "2px" }}
-                >
-                  All
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-dark"
-                  style={{ margin: "2px" }}
-                >
-                  Active
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-dark"
-                  style={{ margin: "2px" }}
-                >
-                  Inactive
-                </button>
-              </div>
-            </div>
-            <div
-              className="row"
-              style={{
-                marginTop: "15px",
-                marginLeft: "5px",
-                marginRight: "5px",
-              }}
-            >
-              <div className="col-sm-12">
-                <table className="table" style={{ border: "1px solid" }}>
-                  <thead>
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Map</th>
-                      <th scope="col">Seat(s)</th>
-                      <th scope="col">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">sd</th>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                      <td>
-                        <span
-                          className="label label-default"
-                          style={{ backgroundColor: "green", padding: "5px" }}
-                        >
-                          Active
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Seat</th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>
-                        <span
-                          className="label label-default"
-                          style={{ backgroundColor: "green", padding: "5px" }}
-                        >
-                          Active
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Status</th>
-                      <td>Larry</td>
-                      <td>the Bird</td>
-                      <td>
-                        <span
-                          className="label label-default"
-                          style={{ backgroundColor: "green", padding: "5px" }}
-                        >
-                          Active
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+              )}
+            </form>
           </div>
         </div>
-        <div className="col-sm-3"></div>
       </div>
     </div>
   );
 };
 
-export default BusTypes;
+BusTypes.prototype = {
+  getBusTypes: PropTypes.func.isRequired,
+  createBusTypes: PropTypes.func.isRequired,
+  busTypes: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  busTypes: state.bus.busTypes,
+});
+
+export default connect(mapStateToProps, { getBusTypes, createBusTypes })(
+  BusTypes
+);

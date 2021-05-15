@@ -17,7 +17,7 @@ const routeReducer = (state = initialState, action) => {
       return {
         ...state,
         routes: state.routes.filter((route) => {
-          return route._id != payload._id;
+          return route._id !== payload._id;
         }),
       };
     case ROUTE_UPDATED:

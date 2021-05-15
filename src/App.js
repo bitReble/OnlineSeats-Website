@@ -13,6 +13,8 @@ import BusTypes from "./components/pages/BusTypes";
 import { useEffect } from "react";
 import { loadUser } from "./actions/auth";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import { Fragment } from "react";
+import Dashboard from "./components/pages/Dashboard";
 
 function App() {
   if (localStorage.token) {
@@ -21,28 +23,30 @@ function App() {
 
   useEffect(() => {
     store.dispatch(loadUser());
-  });
+  }, []);
 
   return (
     <Provider store={store}>
       <Router>
-        <NavBar></NavBar>
-        <Alert></Alert>
-        <Route exact path="/" component={Login}></Route>
-        <Switch>
-          <Route exact path="/login" component={Login}></Route>
-          <Route exact path="/register" component={Register}></Route>
-          <PrivateRoute
-            exact
-            path="/bustype"
-            component={BusTypes}
-          ></PrivateRoute>
-          <PrivateRoute
-            exact
-            path="/busroute"
-            component={BusRoute}
-          ></PrivateRoute>
-        </Switch>
+        <Fragment>
+          <NavBar></NavBar>
+          <Alert></Alert>
+          <Route exact path="/" component={Login}></Route>
+          <Switch>
+            <Route exact path="/login" component={Login}></Route>
+            <Route exact path="/register" component={Register}></Route>
+            <PrivateRoute
+              exact
+              path="/bustype"
+              component={BusTypes}
+            ></PrivateRoute>
+            <PrivateRoute
+              exact
+              path="/busroute"
+              component={BusRoute}
+            ></PrivateRoute>
+          </Switch>
+        </Fragment>
       </Router>
     </Provider>
   );
