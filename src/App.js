@@ -34,7 +34,7 @@ function App() {
           <Route exact path="/register" component={Register}></Route>
           <PrivateRoute
             exact
-            path="/bustypes"
+            path="/bustype"
             component={BusTypes}
           ></PrivateRoute>
           <PrivateRoute

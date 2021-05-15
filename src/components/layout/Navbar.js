@@ -1,8 +1,9 @@
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { logout } from "../../actions/auth";
 
-const NavBar = ({ isAuthenticated }) => {
+const NavBar = ({ isAuthenticated, logout }) => {
   return (
     <div className="nav-bar">
       <div className="left">
@@ -13,7 +14,18 @@ const NavBar = ({ isAuthenticated }) => {
       <div className="right">
         {!isAuthenticated && <Link to="/register">Sign Up</Link>}
         {!isAuthenticated && <Link to="/login">Sign In</Link>}
-        {isAuthenticated && <button className="button">Log out</button>}
+        {isAuthenticated && <Link to="/bustype">Bus types</Link>}
+        {isAuthenticated && <Link to="/busroute">Bus routes</Link>}
+        {isAuthenticated && (
+          <button
+            onClick={() => {
+              logout();
+            }}
+            className="button"
+          >
+            Log out
+          </button>
+        )}
       </div>
     </div>
   );
@@ -21,10 +33,11 @@ const NavBar = ({ isAuthenticated }) => {
 
 NavBar.prototype = {
   isAuthenticated: PropTypes.bool.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, {})(NavBar);
+export default connect(mapStateToProps, { logout })(NavBar);
