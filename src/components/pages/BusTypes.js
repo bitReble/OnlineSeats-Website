@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getBusTypes, createBusTypes } from "../../actions/bus";
+import { getBusTypes, createBusTypes, deleteBusType } from "../../actions/bus";
 
-const BusTypes = ({ getBusTypes, busTypes, createBusTypes }) => {
+const BusTypes = ({ getBusTypes, busTypes, createBusTypes, deleteBusType }) => {
   const [state, setState] = useState({
     name: "",
     number_of_seats: 0,
@@ -24,7 +24,9 @@ const BusTypes = ({ getBusTypes, busTypes, createBusTypes }) => {
     setIsFormDataValid(!!validateFormInput());
   }, [state]);
 
-  const onBusTypeDelete = (id) => {};
+  const onBusTypeDelete = (id) => {
+    deleteBusType(id);
+  };
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
@@ -185,12 +187,15 @@ BusTypes.prototype = {
   getBusTypes: PropTypes.func.isRequired,
   createBusTypes: PropTypes.func.isRequired,
   busTypes: PropTypes.object.isRequired,
+  deleteBusType: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   busTypes: state.bus.busTypes,
 });
 
-export default connect(mapStateToProps, { getBusTypes, createBusTypes })(
-  BusTypes
-);
+export default connect(mapStateToProps, {
+  getBusTypes,
+  createBusTypes,
+  deleteBusType,
+})(BusTypes);
