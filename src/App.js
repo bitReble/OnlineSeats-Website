@@ -15,6 +15,7 @@ import { loadUser } from "./actions/auth";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import { Fragment } from "react";
 import Dashboard from "./components/pages/Dashboard";
+import Schedule from "./components/pages/Schedule";
 
 function App() {
   if (localStorage.token) {
@@ -44,6 +45,11 @@ function App() {
               exact
               path="/busroute"
               component={BusRoute}
+            ></PrivateRoute>
+            <PrivateRoute
+              exact
+              path="/schedule"
+              component={Schedule}
             ></PrivateRoute>
           </Switch>
         </Fragment>
