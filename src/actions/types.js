@@ -9,3 +9,5 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 export const TOKEN_LOADED = "TOKEN_LOADED";
 export const ROUTES_FETCHED = "ROUTES_FETCHED";
+export const ROUTE_CREATED = "ROUTE_CREATED";
+export const ROUTE_DELETED = "ROUTE_DELETED";

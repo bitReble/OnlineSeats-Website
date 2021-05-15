@@ -57,7 +57,7 @@ export const login =
       } else {
         dispatch(setAlert("Still in construction!", "danger"));
       }
-      console.log({ loginResponse: res });
+      setAuthToken(res.data.token);
       dispatch({ type: LOGIN_SUCCESS, payload: res.data });
       dispatch(setAlert(res.data.message, "success"));
       // dispatch(loadUser());

@@ -30,7 +30,7 @@ BusRoute.prototype = {
 };
 
 const mapStateToProps = (state) => ({
-  routes: state.route,
+  routes: state.route.routes,
 });
 
 export default connect(mapStateToProps, { getRoutes })(BusRoute);

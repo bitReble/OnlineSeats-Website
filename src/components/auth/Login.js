@@ -18,7 +18,6 @@ const Login = ({ login, isAuthenticated }) => {
 
       setFormDataValidation(true);
     };
-    console.log({ userData });
     validateFormInput();
   }, [userData]);
 
