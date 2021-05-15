@@ -14,6 +14,7 @@ const NavBar = ({ isAuthenticated, logout }) => {
       <div className="right">
         {!isAuthenticated && <Link to="/register">Sign Up</Link>}
         {!isAuthenticated && <Link to="/login">Sign In</Link>}
+        {isAuthenticated && <Link to="/schedule">Schedule</Link>}
         {isAuthenticated && <Link to="/bustype">Bus types</Link>}
         {isAuthenticated && <Link to="/busroute">Bus routes</Link>}
         {isAuthenticated && (
