@@ -1,4 +1,9 @@
-import { ROUTES_FETCHED, ROUTE_CREATED, ROUTE_DELETED } from "../actions/types";
+import {
+  ROUTES_FETCHED,
+  ROUTE_CREATED,
+  ROUTE_DELETED,
+  ROUTE_UPDATED,
+} from "../actions/types";
 
 const initialState = { routes: [] };
 const routeReducer = (state = initialState, action) => {
@@ -13,6 +18,16 @@ const routeReducer = (state = initialState, action) => {
         ...state,
         routes: state.routes.filter((route) => {
           return route._id != payload._id;
+        }),
+      };
+    case ROUTE_UPDATED:
+      return {
+        ...state,
+        routes: state.routes.map((route) => {
+          if (route._id === payload._id) {
+            return payload;
+          }
+          return route;
         }),
       };
     default:

@@ -3,10 +3,15 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { deleteRoute } from "../../actions/route";
 
-const BusRoutesList = ({ routes, deleteRoute }) => {
+const BusRoutesList = ({ routes, deleteRoute, setRoute }) => {
   const onRouteDelete = (id) => {
     deleteRoute(id);
   };
+
+  const onRouteUpdate = (route) => {
+    setRoute(route);
+  };
+
   return (
     <ul className="list-group my-5">
       <h3 className="text-capitalize text-center">Routes List</h3>
@@ -33,7 +38,12 @@ const BusRoutesList = ({ routes, deleteRoute }) => {
                   <td>{route.path[0]}</td>
                   <td>{route.path[1]}</td>
                   <td className="todo-icon">
-                    <span className="mx-2 text-success">
+                    <span
+                      className="mx-2 text-success"
+                      onClick={() => {
+                        onRouteUpdate(route);
+                      }}
+                    >
                       <i className="fas fa-pen" />
                     </span>
                     <span

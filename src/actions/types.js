@@ -11,3 +11,4 @@ export const TOKEN_LOADED = "TOKEN_LOADED";
 export const ROUTES_FETCHED = "ROUTES_FETCHED";
 export const ROUTE_CREATED = "ROUTE_CREATED";
 export const ROUTE_DELETED = "ROUTE_DELETED";
+export const ROUTE_UPDATED = "ROUTE_UPDATED";
