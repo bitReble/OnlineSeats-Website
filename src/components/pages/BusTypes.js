@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getBusTypes, createBusTypes, deleteBusType } from "../../actions/bus";
+import {
+  getBusTypes,
+  createBusTypes,
+  deleteBusType,
+  updateBusType,
+} from "../../actions/bus";
 
-const BusTypes = ({ getBusTypes, busTypes, createBusTypes, deleteBusType }) => {
+const BusTypes = ({
+  getBusTypes,
+  busTypes,
+  createBusTypes,
+  deleteBusType,
+  updateBusType,
+}) => {
   const [state, setState] = useState({
     name: "",
     number_of_seats: 0,
@@ -12,6 +23,7 @@ const BusTypes = ({ getBusTypes, busTypes, createBusTypes, deleteBusType }) => {
   });
 
   const [isFormDataValid, setIsFormDataValid] = useState(false);
+  const [busType, setBusType] = useState(null);
 
   useEffect(() => {
     getBusTypes();
@@ -28,8 +40,16 @@ const BusTypes = ({ getBusTypes, busTypes, createBusTypes, deleteBusType }) => {
     deleteBusType(id);
   };
 
+  const onBustTypeUpdate = (busType) => {
+    setBusType(busType);
+    setState(busType);
+  };
+
   const onFormSubmit = async (e) => {
     e.preventDefault();
+    if (busType) {
+      return updateBusType({ ...state, bus_id: busType._id });
+    }
     createBusTypes(state);
   };
 
@@ -72,7 +92,7 @@ const BusTypes = ({ getBusTypes, busTypes, createBusTypes, deleteBusType }) => {
                           <span
                             className="mx-2 text-success"
                             onClick={() => {
-                              // onRouteUpdate(route);
+                              onBustTypeUpdate(busType);
                             }}
                           >
                             <i className="fas fa-pen" />
@@ -99,6 +119,34 @@ const BusTypes = ({ getBusTypes, busTypes, createBusTypes, deleteBusType }) => {
           <div className="card card-body my-3">
             <h3 className="text-capitalize text-center">Add Bus Types</h3>
             <form onSubmit={onFormSubmit}>
+              {busType && (
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                    <div className="input-group-text bg-primary text-white">
+                      Id
+                    </div>
+                  </div>
+                  <input
+                    value={busType._id}
+                    disabled={true}
+                    onChange={(e) => {
+                      setState((preState) => {
+                        return { ...preState, name: e.target.value };
+                      });
+                    }}
+                    type="text"
+                    className="form-control"
+                  />
+                  <span
+                    className="mx-2 text-danger"
+                    onClick={() => {
+                      setBusType(null);
+                    }}
+                  >
+                    <i className="fas fa-times-circle" />
+                  </span>
+                </div>
+              )}
               <div className="input-group">
                 <div className="input-group-prepend">
                   <div className="input-group-text bg-primary text-white">
@@ -172,7 +220,7 @@ const BusTypes = ({ getBusTypes, busTypes, createBusTypes, deleteBusType }) => {
                   type="submit"
                   className="btn btn-block btn-primary mt-3"
                 >
-                  + Add Bus Type
+                  {busType ? "Update" : "+ Add Bus Type"}
                 </button>
               )}
             </form>
@@ -198,4 +246,5 @@ export default connect(mapStateToProps, {
   getBusTypes,
   createBusTypes,
   deleteBusType,
+  updateBusType,
 })(BusTypes);
