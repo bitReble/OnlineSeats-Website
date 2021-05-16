@@ -1,113 +1,228 @@
-import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useEffect, useState } from "react";
+import { Dropdown } from "react-bootstrap";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getSchedules, createSchedule } from "../../actions/schedule";
+import { getRoutes } from "../../actions/route";
+import { getBusTypes } from "../../actions/bus";
 
-export default class Schedule extends Component {
-    render() {
+const Schedule = ({
+  getSchedules,
+  getBusTypes,
+  getRoutes,
+  createSchedule,
+  schedules,
+  busTypes,
+  routes,
+}) => {
+  const now = new Date();
+  const currentDate = `${now.getFullYear()}-${(now.getMonth() + 1)
+    .toString()
+    .padStart(2, 0)}-${now.getDate().toString().padStart(2, 0)}`;
+  const currentTime = `${now.getHours().toString().padStart(2, 0)}:${now
+    .getMinutes()
+    .toString()
+    .padStart(2, 0)}`;
+  const [state, setState] = useState({
+    route: "",
+    bus_type: "",
+    from: currentDate,
+    to: currentDate,
+    departure: currentTime,
+    arrival: currentTime,
+    recurring: [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday",
+    ],
+    price: 0,
+  });
+
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    const validateForm = () => {
+      return (
+        state.route &&
+        state.bus_type &&
+        state.from &&
+        state.to &&
+        state.departure &&
+        state.arrival &&
+        state.price &&
+        state.recurring
+      );
+    };
+    setIsFormValid(!!validateForm());
+  }, [state]);
+
+  useEffect(() => {
+    getSchedules();
+    getRoutes();
+    getBusTypes();
+  }, [getSchedules, getRoutes, getBusTypes]);
+
+  const onFormSubmit = async (e) => {
+    e.preventDefault();
+    createSchedule(state);
+  };
+
   return (
-    <div id="schedule" class="container-fluid">
-        <div className="row" style={{margin: "40px"}}>
-            <div className="col-sm-5">
-            </div>
-            <div className="col-sm-3">
-                <div className="row">
-                    <h1><b>Schedule</b></h1>
-                </div>   
-            </div>
-            <div className="col-sm-4">     
-            </div>
+    <div className="schedule-wrapper" >
+      <form className="schedule-row-wrapper card" onSubmit={onFormSubmit} style= {{width: "1000px", border: "1px solid", marginTop: "20px"}}>
+        <h1 style= {{marginBottom: "30px", marginTop: "20px", color: "Dark blue"}}>Create Schedule</h1>
+
+        <div className="schedule-row" style= {{marginBottom: "20px"}}>
+          <div style={{ display: "flex" }}>
+            <p style={{ marginRight: "25px", marginTop: "5px", fontSize: "22px", marginLeft: "57px"}}>From</p>
+            <input class="form-control secondary" style= {{width: "240px"}}
+              type="date"
+              value={state.from}
+              onChange={(e) => {
+                setState((preState) => {
+                  return { ...preState, from: e.target.value };
+                });
+              }}
+            />
+          </div>
+          <div style={{ display: "flex" }}>
+            <p style={{ marginRight: "25px", marginTop: "5px", fontSize: "22px", marginLeft: "20px"}}>To</p>
+            <input class="form-control secondary" style= {{width: "240px", marginRight: "35px"}}
+              type="date"
+              value={state.to}
+              onChange={(e) => {
+                setState((preState) => {
+                  return { ...preState, to: e.target.value };
+                });
+              }}
+            />
+          </div>
         </div>
-        <div className="row" style={{margin: "20px"}}>
-            <div className="col-sm-3"></div>
-            <div className="col-sm-6">
-                <div className="card">
-
-                    <div className="row" style={{marginTop: "15px", marginBottom: "15px", marginLeft:"10px"}}>
-                        <div className="col-sm-1" >
-                            <label style={{fontSize: "20px",marginLeft: "10px"}}>Route:</label>
-                        </div>
-                        <div className="col-sm-6">
-                        <div class="dropdown" style={{marginLeft: "10px"}}>
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Select Route
-                            <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Kurungala to Kandy</a></li>
-                                <li><a href="#">Kandy to Mathale</a></li>
-                                <li><a href="#">Kandy to Jaffna</a></li>
-                            </ul>
-                        </div>
-                        </div>
-                        <div className="col-sm-2">
-                        <label style={{fontSize: "20px", marginLeft: "43px"}}>Bus Type:</label>
-                        </div>
-                        <div className="col-sm-3">
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Select Bus Type
-                            <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Semi Luxury</a></li>
-                                <li><a href="#">Luxury</a></li>
-                                <li><a href="#">Normal</a></li>
-                            </ul>
-                        </div>
-                        </div>
-                    </div>
-
-                    <div className="row" style={{marginTop: "15px", marginBottom: "15px", marginLeft:"10px"}}>
-                        <div className="col-sm-1" >
-                            <label style={{fontSize: "20px",marginLeft: "10px"}}>From:</label>
-                        </div>
-                        <div className="col-sm-6">
-                        <input type="date" id="birthday" name="birthday"/>
-                        </div>
-                        <div className="col-sm-2">
-                        <label style={{fontSize: "20px", marginLeft: "73px"}}>To:</label>
-                        </div>
-                        <div className="col-sm-3">
-                        <input type="date" id="birthday" name="birthday"/>
-                        </div>
-                    </div>
-
-                    <div className="row" style={{marginTop: "15px", marginBottom: "15px", marginLeft:"10px"}}>
-                        <div className="col-sm-1" >
-                            <label style={{fontSize: "20px",marginLeft: "px"}}>Depature:</label>
-                        </div>
-                        <div className="col-sm-6">
-                        <input type="time" id="depature" name="appt"   style={{marginLeft: "30px"}}/>
-                        </div>
-                        <div className="col-sm-2" >
-                        <label style={{fontSize: "20px", marginLeft: "73px"}}>Arrival:</label>
-                        </div>
-                        <div className="col-sm-3">
-                        <input type="time" id="arrival" name="appt" />
-                        </div>
-                    </div>
-
-                    <div className="row" style={{marginTop: "15px", marginBottom: "15px", marginLeft:"10px"}}>
-                        <div className="col-sm-1" >
-                            <label style={{fontSize: "20px",marginLeft: "px"}}>Price:</label>
-                        </div>
-                        <div className="col-sm-11">
-                        <input type="number" min="1" step="any" />
-                        </div>    
-                    </div>
-
-                    <div className="row" style={{marginTop: "15px", marginBottom: "15px", marginLeft:"10px"}}>
-                        <div className="col-sm-5" >
-                        </div>
-                        <div className="col-sm-2">
-                        <button type="button" class="btn btn-primary">Submit</button>
-                        </div>
-                        <div className="col-sm-5" >
-                        </div>
-                    </div>
-              
-                </div>
-            </div>
-            <div className="col-sm-3"></div>
+        <div className="schedule-row" style= {{marginBottom: "20px"}}>
+          <div style={{ display: "flex" }}>
+            <p style={{ marginRight: "25px", marginTop: "5px", fontSize: "22px", marginLeft: "20px"}}>Depature</p>
+            <input class="form-control secondary" style= {{width: "240px"}}
+              type="time"
+              value={state.departure}
+              onChange={(e) => {
+                setState((preState) => {
+                  return { ...preState, departure: e.target.value };
+                });
+              }}
+            />
+          </div>
+          <div style={{ display: "flex" }}>
+            <p style={{ marginRight: "25px", marginTop: "5px", fontSize: "22px", marginLeft: "20px"}}>Arrival</p>
+            <input class="form-control secondary" style= {{width: "240px",marginRight: "35px"}}
+              type="time"
+              value={state.arrival}
+              onChange={(e) => {
+                setState((preState) => {
+                  return { ...preState, arrival: e.target.value };
+                });
+              }}
+            />
+          </div>
         </div>
+        <div className="schedule-row" style= {{marginBottom: "20px"}}>
+          <div style={{ display: "flex" }}>
+            <p style={{ marginRight: "25px", marginTop: "5px", fontSize: "22px", marginLeft: "50px"}}>Route</p>
+            <Dropdown>
+              <Dropdown.Toggle variant="primary" id="dropdown-basic" class="btn btn-outline-secondary dropdown-toggle" style= {{width: "240px"}}>
+                Select Route
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {routes.map((route) => {
+                  return (
+                    <Dropdown.Item
+                      key={route._id}
+                      onClick={() => {
+                        setState((preState) => {
+                          return { ...preState, route: route._id };
+                        });
+                      }}
+                    >
+                      {route._id}
+                    </Dropdown.Item>
+                  );
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          <div style={{ display: "flex" }}>
+            <p style={{ marginRight: "25px", marginTop: "5px", fontSize: "22px", marginLeft: "20px"}}>Bus Type</p>
+            <Dropdown>
+              <Dropdown.Toggle variant="primary" id="dropdown-basic" class="btn btn-outline-secondary dropdown-toggle" style= {{width: "240px", marginRight: "35px"}}>
+                Select Bus Type
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {busTypes.map((busType) => {
+                  return (
+                    <Dropdown.Item
+                      key={busType._id}
+                      onClick={() => {
+                        setState((preState) => {
+                          return { ...preState, bus_type: busType._id };
+                        });
+                      }}
+                    >
+                      {busType._id}
+                    </Dropdown.Item>
+                  );
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        </div>
+        <div className="schedule-row">
+          <div style={{ display: "flex" }}>
+            <p style={{ marginRight: "25px", marginTop: "5px", fontSize: "22px", marginLeft: "57px"}}>Price</p>
+            <input class="form-control secondary" style= {{width: "240px", height: "40px"}}
+              type="number"
+              value={state.price}
+              onChange={(e) => {
+                setState((preState) => {
+                  return { ...preState, price: e.target.value };
+                });
+              }}
+            />
+          </div>
+        </div>
+        <div style={{ marginTop: "20px" }}>
+          {isFormValid && (
+            <button className="btn btn-success center" style={{width: "180px", height: "50px", fontSize: "22px" }}>
+              Create
+            </button>
+          )}
+        </div>
+      </form>
     </div>
   );
-}
-}
+};
 
+Schedule.prototype = {
+  getSchedules: PropTypes.func.isRequired,
+  createSchedule: PropTypes.func.isRequired,
+  getRoutes: PropTypes.func.isRequired,
+  getBusTypes: PropTypes.func.isRequired,
+  schedules: PropTypes.object.isRequired,
+  routes: PropTypes.object.isRequired,
+  busTypes: PropTypes.object.isRequired,
+};
 
+const mapStateToProps = (state) => ({
+  schedules: state.schedule.schedules,
+  routes: state.route.routes,
+  busTypes: state.bus.busTypes,
+});
+
+export default connect(mapStateToProps, {
+  getSchedules,
+  getRoutes,
+  getBusTypes,
+  createSchedule,
+})(Schedule);
