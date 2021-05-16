@@ -1,6 +1,11 @@
 import axios from "axios";
 import { setAlert } from "./alert";
-import { LOGOUT, SCHEDULE_FETCHED, SCHEDULE_CREATED } from "./types";
+import {
+  LOGOUT,
+  SCHEDULE_FETCHED,
+  SCHEDULE_CREATED,
+  SCHEDULE_UPDATED,
+} from "./types";
 
 export const getSchedules = () => async (dispatch) => {
   const config = {
@@ -28,6 +33,51 @@ export const getSchedules = () => async (dispatch) => {
     }
   }
 };
+
+export const updateSchedule =
+  ({
+    schedule_id,
+    route,
+    bus_type,
+    from,
+    to,
+    departure,
+    arrival,
+    recurring,
+    price,
+  }) =>
+  async (dispatch) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const body = JSON.stringify({
+      schedule_id,
+      route,
+      bus_type,
+      from,
+      to,
+      departure,
+      arrival,
+      recurring,
+      price,
+    });
+    try {
+      let res = await axios.put("schedule/update-schedule", body, config);
+      console.log(res.data);
+      dispatch({ type: SCHEDULE_UPDATED, payload: res.data });
+    } catch (err) {
+      console.log(err);
+      const errors = err.response.data.errors;
+      if (err.response.status === 401) {
+        dispatch({ type: LOGOUT });
+      }
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.message, "danger")));
+      }
+    }
+  };
 
 export const createSchedule =
   ({
