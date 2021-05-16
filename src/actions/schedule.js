@@ -9,11 +9,6 @@ import {
 } from "./types";
 
 export const getSchedules = () => async (dispatch) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
   try {
     let res = await axios.get("schedule/get-schedule");
     dispatch({ type: SCHEDULE_FETCHED, payload: res.data });
