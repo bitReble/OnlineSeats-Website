@@ -6,6 +6,7 @@ import {
   SCHEDULE_CREATED,
   SCHEDULE_UPDATED,
   SCHEDULE_DELETED,
+  SINGLE_SCHEDULE_FETCHED,
 } from "./types";
 
 export const getSchedules = () => async (dispatch) => {
@@ -31,7 +32,6 @@ export const searchSchedules =
         "Content-Type": "application/json",
       },
     };
-    const now = new Date();
     const body = JSON.stringify({
       from,
       to,
@@ -147,6 +147,32 @@ export const createSchedule =
     try {
       let res = await axios.post("schedule/create-schedule", body, config);
       dispatch({ type: SCHEDULE_CREATED, payload: res.data });
+    } catch (err) {
+      const errors = err.response.data.errors;
+      if (err.response.status === 401) {
+        dispatch({ type: LOGOUT });
+      }
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.message, "danger")));
+      }
+    }
+  };
+
+export const getSingleSchedule =
+  ({ schedule_id, date }) =>
+  async (dispatch) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const body = JSON.stringify({
+      schedule_id,
+      date,
+    });
+    try {
+      let res = await axios.post("/schedule/get-single-schedule", body, config);
+      dispatch({ type: SINGLE_SCHEDULE_FETCHED, payload: res.data });
     } catch (err) {
       const errors = err.response.data.errors;
       if (err.response.status === 401) {

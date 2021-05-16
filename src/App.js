@@ -17,6 +17,7 @@ import PrivateRoute from "./components/routing/PrivateRoute";
 import { Fragment } from "react";
 import Search from "./components/pages/Search";
 import Schedule from "./components/pages/Schedule";
+import Book from "./components/pages/Book";
 
 function App() {
   if (localStorage.token) {
@@ -56,6 +57,11 @@ function App() {
               exact
               path="/search"
               component={Search}
+            ></PrivateRoute>
+            <PrivateRoute
+              exact
+              path="/book/:id/:date"
+              component={Book}
             ></PrivateRoute>
           </Switch>
         </Fragment>

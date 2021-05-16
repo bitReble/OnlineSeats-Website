@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { searchSchedules } from "../../actions/schedule";
+import { Link } from "react-router-dom";
 
 const Search = ({ searchSchedules, schedules }) => {
   const now = new Date();
@@ -36,12 +37,11 @@ const Search = ({ searchSchedules, schedules }) => {
           <table style={{ marginLeft: "20px", marginRight: "20px" }}>
             <thead>
               <tr className="list-group-item text-capitalize d-flex justify-content-between">
-                <th>Id</th>
+                <th>Depature Time</th>
+                <th>Arrival Time</th>
                 <th>From</th>
                 <th>To</th>
-                <th>Departure</th>
-                <th>Arrival</th>
-                <th>Time stamp</th>
+                <th>Price</th>
                 <th></th>
               </tr>
             </thead>
@@ -52,25 +52,19 @@ const Search = ({ searchSchedules, schedules }) => {
                     key={index}
                     className="list-group-item text-capitalize d-flex justify-content-between"
                   >
-                    <td>
-                      <h6>{`${schedule?._id.toString().substr(0, 7)} ...`}</h6>
-                    </td>
-                    <td>{schedule.route.path[0]}</td>
-                    <td>{schedule.route.path[1]}</td>
                     <td>{schedule.departure}</td>
                     <td>{schedule.arrival}</td>
-                    <td>{`${schedule.from
-                      .toString()
-                      .substr(0, 10)} To ${schedule.to
-                      .toString()
-                      .substr(0, 10)}`}</td>
+                    <td>{schedule.route.path[0]}</td>
+                    <td>{schedule.route.path[1]}</td>
+                    <td>{schedule.price}</td>
                     <td className="todo-icon">
-                      <span className="mx-2 text-success" onClick={() => {}}>
-                        <i className="fas fa-pen" />
-                      </span>
-                      <span className="mx-2 text-danger" onClick={() => {}}>
-                        <i className="fas fa-trash" />
-                      </span>
+                      <Link
+                        to={`/book/${schedule._id}/${schedule.date}`}
+                        className="button"
+                        style={{ background: "green" }}
+                      >
+                        Book
+                      </Link>
                     </td>
                   </tr>
                 );
