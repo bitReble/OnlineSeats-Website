@@ -53,7 +53,7 @@ const Register = ({ register, isAuthenticated, userCategory }) => {
   };
 
   if (isAuthenticated && userCategory === "operator") {
-    return <Redirect to="/busroute"></Redirect>;
+    return <Redirect to="/schedule"></Redirect>;
   } else if (isAuthenticated && userCategory === "passenger") {
     return <Redirect to="/search"></Redirect>;
   }
