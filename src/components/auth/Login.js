@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { login } from "../../actions/auth";
 import { Redirect } from "react-router";
 
-const Login = ({ login, isAuthenticated }) => {
-  const [userCategory, setUserCategory] = useState("passenger");
+const Login = ({ login, isAuthenticated, userCategory }) => {
+  const [lUserCategory, setlUserCategory] = useState("passenger");
   const [userData, setUserData] = useState({});
   const [isFormDataValid, setFormDataValidation] = useState(false);
 
@@ -39,11 +39,13 @@ const Login = ({ login, isAuthenticated }) => {
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    login({ ...userData, userCategory });
+    login({ ...userData, userCategory: lUserCategory });
   };
 
-  if (isAuthenticated) {
+  if (isAuthenticated && userCategory === "operator") {
     return <Redirect to="/busroute"></Redirect>;
+  } else if (isAuthenticated && userCategory === "passenger") {
+    return <Redirect to="/search"></Redirect>;
   }
 
   return (
@@ -55,9 +57,9 @@ const Login = ({ login, isAuthenticated }) => {
           <div className="icons">
             <div className="category">
               <div
-                onClick={() => setUserCategory("passenger")}
+                onClick={() => setlUserCategory("passenger")}
                 className={`decorator ${
-                  userCategory === "passenger" ? "active" : ""
+                  lUserCategory === "passenger" ? "active" : ""
                 }`}
               >
                 <i className="fas fa-user-alt"></i>
@@ -66,9 +68,9 @@ const Login = ({ login, isAuthenticated }) => {
             </div>
             <div className="category">
               <div
-                onClick={() => setUserCategory("operator")}
+                onClick={() => setlUserCategory("operator")}
                 className={`decorator ${
-                  userCategory === "operator" ? "active" : ""
+                  lUserCategory === "operator" ? "active" : ""
                 }`}
               >
                 <i className="fas fa-user-cog"></i>
@@ -77,9 +79,9 @@ const Login = ({ login, isAuthenticated }) => {
             </div>
             <div className="category">
               <div
-                onClick={() => setUserCategory("admin")}
+                onClick={() => setlUserCategory("admin")}
                 className={`decorator ${
-                  userCategory === "admin" ? "active" : ""
+                  lUserCategory === "admin" ? "active" : ""
                 }`}
               >
                 <i className="fas fa-laptop-code"></i>
@@ -120,10 +122,12 @@ const Login = ({ login, isAuthenticated }) => {
 
 Login.prototype = {
   login: PropTypes.func.isRequired,
+  userCategory: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  userCategory: state.auth.userCategory,
 });
 
 export default connect(mapStateToProps, { login })(Login);

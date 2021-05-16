@@ -6,8 +6,8 @@ import { useEffect } from "react";
 import { register } from "../../actions/auth";
 import { Redirect } from "react-router";
 
-const Register = ({ register, isAuthenticated }) => {
-  const [userCategory, setUserCategory] = useState("passenger");
+const Register = ({ register, isAuthenticated, userCategory }) => {
+  const [lUserCategory, setlUserCategory] = useState("passenger");
   const [userData, setUserData] = useState({});
   const [isFormDataValid, setFormDataValidation] = useState(false);
 
@@ -49,11 +49,13 @@ const Register = ({ register, isAuthenticated }) => {
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    register({ ...userData, userCategory });
+    register({ ...userData, userCategory: lUserCategory });
   };
 
-  if (isAuthenticated) {
+  if (isAuthenticated && userCategory === "operator") {
     return <Redirect to="/busroute"></Redirect>;
+  } else if (isAuthenticated && userCategory === "passenger") {
+    return <Redirect to="/search"></Redirect>;
   }
 
   return (
@@ -65,9 +67,9 @@ const Register = ({ register, isAuthenticated }) => {
           <div className="icons">
             <div className="category">
               <div
-                onClick={() => setUserCategory("passenger")}
+                onClick={() => setlUserCategory("passenger")}
                 className={`decorator ${
-                  userCategory === "passenger" ? "active" : ""
+                  lUserCategory === "passenger" ? "active" : ""
                 }`}
               >
                 <i className="fas fa-user-alt"></i>
@@ -76,9 +78,9 @@ const Register = ({ register, isAuthenticated }) => {
             </div>
             <div className="category">
               <div
-                onClick={() => setUserCategory("operator")}
+                onClick={() => setlUserCategory("operator")}
                 className={`decorator ${
-                  userCategory === "operator" ? "active" : ""
+                  lUserCategory === "operator" ? "active" : ""
                 }`}
               >
                 <i className="fas fa-user-cog"></i>
@@ -126,10 +128,12 @@ const Register = ({ register, isAuthenticated }) => {
 Register.prototype = {
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
+  userCategory: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  userCategory: state.auth.userCategory,
 });
 
 export default connect(mapStateToProps, { register })(Register);

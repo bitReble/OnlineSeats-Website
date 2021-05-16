@@ -8,6 +8,7 @@ import {
 
 const initalState = {
   token: localStorage.getItem("token"),
+  userCategory: localStorage.getItem("userCategory"),
   isAuthenticated: false,
   loading: true,
   user: null,
@@ -27,15 +28,18 @@ const authReducer = (state = initalState, action) => {
       };
     case LOGIN_SUCCESS:
       localStorage.setItem("token", payload.token);
+      localStorage.setItem("userCategory", payload.userCategory);
       return {
         ...state,
         payload,
         isAuthenticated: true,
+        userCategory: payload.userCategory,
       };
     case TOKEN_LOADED:
       return { ...state, ...payload, isAuthenticated: true };
     case LOGOUT:
       localStorage.removeItem("token");
+      localStorage.removeItem("userCategory");
       return { ...state, isAuthenticated: false, token: null };
     default:
       return state;

@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { loadUser } from "./actions/auth";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import { Fragment } from "react";
-import Dashboard from "./components/pages/Dashboard";
+import Search from "./components/pages/Search";
 import Schedule from "./components/pages/Schedule";
 
 function App() {
@@ -51,6 +51,11 @@ function App() {
               exact
               path="/schedule"
               component={Schedule}
+            ></PrivateRoute>
+            <PrivateRoute
+              exact
+              path="/search"
+              component={Search}
             ></PrivateRoute>
           </Switch>
         </Fragment>

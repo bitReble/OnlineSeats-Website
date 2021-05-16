@@ -54,11 +54,13 @@ export const login =
       let res;
       if (userCategory === "operator") {
         res = await axios.post("auth/operator/signin", body, config);
+      } else if (userCategory === "passenger") {
+        res = await axios.post("auth/passenger/signin", body, config);
       } else {
         dispatch(setAlert("Still in construction!", "danger"));
       }
       setAuthToken(res.data.token);
-      dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+      dispatch({ type: LOGIN_SUCCESS, payload: { ...res.data, userCategory } });
       dispatch(setAlert(res.data.message, "success"));
       // dispatch(loadUser());
     } catch (err) {
@@ -78,6 +80,12 @@ export const logout = () => (dispatch) => {
 export const loadUser = () => async (dispatch) => {
   if (localStorage.token) {
     setAuthToken(localStorage.token);
-    dispatch({ type: TOKEN_LOADED, payload: { token: localStorage.token } });
+    dispatch({
+      type: TOKEN_LOADED,
+      payload: {
+        token: localStorage.token,
+        userCategory: localStorage.userCategory,
+      },
+    });
   }
 };
