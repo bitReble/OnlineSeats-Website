@@ -6,6 +6,7 @@ import {
   getSchedules,
   createSchedule,
   updateSchedule,
+  deleteSchedule,
 } from "../../actions/schedule";
 import { getRoutes } from "../../actions/route";
 import { getBusTypes } from "../../actions/bus";
@@ -16,6 +17,7 @@ const Schedule = ({
   getRoutes,
   createSchedule,
   updateSchedule,
+  deleteSchedule,
   schedules,
   busTypes,
   routes,
@@ -75,9 +77,18 @@ const Schedule = ({
   const onFormSubmit = async (e) => {
     e.preventDefault();
     if (schedule) {
-      return updateSchedule({ ...state, schedule_id: schedule._id });
+      return updateSchedule({
+        ...state,
+        schedule_id: schedule._id,
+        route: state.route._id,
+        bus_type: state.bus_type._id,
+      });
     }
-    createSchedule(state);
+    createSchedule({
+      ...state,
+      route: state.route._id,
+      bus_type: state.bus_type._id,
+    });
   };
 
   return (
@@ -122,7 +133,7 @@ const Schedule = ({
                         onClick={() => {
                           setSchedule(schedule);
                           setState({
-                            route: schedule.route._id,
+                            route: schedule.route,
                             bus_type: schedule.bus_type,
                             from: schedule.from.toString().substr(0, 10),
                             to: schedule.from.toString().substr(0, 10),
@@ -138,7 +149,7 @@ const Schedule = ({
                       <span
                         className="mx-2 text-danger"
                         onClick={() => {
-                          // onRouteDelete(route._id);
+                          deleteSchedule(schedule._id);
                         }}
                       >
                         <i className="fas fa-trash" />
@@ -164,7 +175,7 @@ const Schedule = ({
                 <span
                   className="mx-2 text-danger"
                   onClick={() => {
-                    // setRoute(null);
+                    setSchedule(null);
                   }}
                 >
                   <i className="fas fa-times-circle" />
@@ -229,7 +240,9 @@ const Schedule = ({
               <p style={{ marginRight: "5px" }}>Route</p>
               <Dropdown>
                 <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                  {state.route ? state.route : "Select Route"}
+                  {state.route
+                    ? `${state.route.path[0]} to ${state.route.path[1]}`
+                    : "Select Route"}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {routes.map((route) => {
@@ -238,7 +251,7 @@ const Schedule = ({
                         key={route._id}
                         onClick={() => {
                           setState((preState) => {
-                            return { ...preState, route: route._id };
+                            return { ...preState, route: route };
                           });
                         }}
                       >
@@ -253,7 +266,7 @@ const Schedule = ({
               <p style={{ marginRight: "5px" }}>Bus Type</p>
               <Dropdown>
                 <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                  {state.bus_type ? state.bus_type : "Select Bus Type"}
+                  {state.bus_type ? state.bus_type.name : "Select Bus Type"}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {busTypes.map((busType) => {
@@ -262,7 +275,7 @@ const Schedule = ({
                         key={busType._id}
                         onClick={() => {
                           setState((preState) => {
-                            return { ...preState, bus_type: busType._id };
+                            return { ...preState, bus_type: busType };
                           });
                         }}
                       >
@@ -306,6 +319,7 @@ Schedule.prototype = {
   createSchedule: PropTypes.func.isRequired,
   getRoutes: PropTypes.func.isRequired,
   getBusTypes: PropTypes.func.isRequired,
+  deleteSchedule: PropTypes.func.isRequired,
   schedules: PropTypes.object.isRequired,
   routes: PropTypes.object.isRequired,
   busTypes: PropTypes.object.isRequired,
@@ -323,4 +337,5 @@ export default connect(mapStateToProps, {
   getBusTypes,
   createSchedule,
   updateSchedule,
+  deleteSchedule,
 })(Schedule);

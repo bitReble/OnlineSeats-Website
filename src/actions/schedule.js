@@ -5,6 +5,7 @@ import {
   SCHEDULE_FETCHED,
   SCHEDULE_CREATED,
   SCHEDULE_UPDATED,
+  SCHEDULE_DELETED,
 } from "./types";
 
 export const getSchedules = () => async (dispatch) => {
@@ -13,15 +14,8 @@ export const getSchedules = () => async (dispatch) => {
       "Content-Type": "application/json",
     },
   };
-  const now = new Date();
-  const body = JSON.stringify({
-    from: "Colombo",
-    to: "Sammanthurai",
-    date: now.setDate(now.getDate() + 1),
-  });
   try {
-    let res = await axios.post("schedule/get-schedule", body, config);
-    console.log(res.data);
+    let res = await axios.get("schedule/get-schedule");
     dispatch({ type: SCHEDULE_FETCHED, payload: res.data });
   } catch (err) {
     const errors = err.response.data.errors;
@@ -33,6 +27,34 @@ export const getSchedules = () => async (dispatch) => {
     }
   }
 };
+
+export const searchSchedules =
+  ({ from, to, date }) =>
+  async (dispatch) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const now = new Date();
+    const body = JSON.stringify({
+      from,
+      to,
+      date,
+    });
+    try {
+      let res = await axios.post("schedule/search-schedule", body, config);
+      dispatch({ type: SCHEDULE_FETCHED, payload: res.data });
+    } catch (err) {
+      const errors = err.response.data.errors;
+      if (err.response.status === 401) {
+        dispatch({ type: LOGOUT });
+      }
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.message, "danger")));
+      }
+    }
+  };
 
 export const updateSchedule =
   ({
@@ -65,10 +87,8 @@ export const updateSchedule =
     });
     try {
       let res = await axios.put("schedule/update-schedule", body, config);
-      console.log(res.data);
       dispatch({ type: SCHEDULE_UPDATED, payload: res.data });
     } catch (err) {
-      console.log(err);
       const errors = err.response.data.errors;
       if (err.response.status === 401) {
         dispatch({ type: LOGOUT });
@@ -78,6 +98,29 @@ export const updateSchedule =
       }
     }
   };
+
+export const deleteSchedule = (schedule_id) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify({
+    schedule_id,
+  });
+  try {
+    await axios.post("schedule/delete-schedule", body, config);
+    dispatch({ type: SCHEDULE_DELETED, payload: { _id: schedule_id } });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (err.response.status === 401) {
+      dispatch({ type: LOGOUT });
+    }
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.message, "danger")));
+    }
+  }
+};
 
 export const createSchedule =
   ({
