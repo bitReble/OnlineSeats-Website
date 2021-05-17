@@ -7,6 +7,7 @@ import {
   SCHEDULE_UPDATED,
   SCHEDULE_DELETED,
   SINGLE_SCHEDULE_FETCHED,
+  TICKET_RESERVED,
 } from "./types";
 
 export const getSchedules = () => async (dispatch) => {
@@ -173,6 +174,32 @@ export const getSingleSchedule =
     try {
       let res = await axios.post("/schedule/get-single-schedule", body, config);
       dispatch({ type: SINGLE_SCHEDULE_FETCHED, payload: res.data });
+    } catch (err) {
+      const errors = err.response.data.errors;
+      if (err.response.status === 401) {
+        dispatch({ type: LOGOUT });
+      }
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.message, "danger")));
+      }
+    }
+  };
+
+export const reserveTicket =
+  ({ ticket_id, token }) =>
+  async (dispatch) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const body = JSON.stringify({
+      ticket_id,
+      token,
+    });
+    try {
+      let res = await axios.post("/ticket/reserve-ticket", body, config);
+      dispatch({ type: TICKET_RESERVED, payload: res.data });
     } catch (err) {
       const errors = err.response.data.errors;
       if (err.response.status === 401) {

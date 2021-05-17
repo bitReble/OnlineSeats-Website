@@ -313,3 +313,8 @@
 .active {
   color: black !important;
 }
+
+.hover:hover {
+  background: black !important;
+  color: white !important;
+}
